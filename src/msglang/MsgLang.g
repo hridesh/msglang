@@ -1,5 +1,18 @@
 grammar MsgLang;
-import ForkLang; 
+
+ program returns [Program ast]        
+ 		locals [ArrayList<DefineDecl> defs, Exp expr]
+ 		@init { $defs = new ArrayList<DefineDecl>(); $expr = new UnitExp(); } :
+		(def=definedecl { $defs.add($def.ast); } )* (e=exp { $expr = $e.ast; } )? 
+		{ $ast = new Program($defs, $expr); }
+		;
+
+ definedecl returns [DefineDecl ast] :
+ 		'(' Define 
+ 			id=Identifier
+ 			e=exp
+ 		')' { $ast = new DefineDecl($id.text, $e.ast); }
+ 		;
  
 exp returns [Exp ast]: 
 		va=varexp { $ast = $va.ast; }
@@ -30,12 +43,15 @@ exp returns [Exp ast]:
         | fork=forkexp { $ast = $fork.ast; }
         | lock=lockexp { $ast = $lock.ast; }
         | ulock=unlockexp { $ast = $ulock.ast; }
+// Begin: New Expressions for Msglang        
         | proc=procexp { $ast = $proc.ast; }
         | send=sendexp { $ast = $send.ast; }
         | stp=stopexp { $ast = $stp.ast; }
         | self=selfexp { $ast = $self.ast; }
+// End: New Expressions for Msglang        
         ;
  
+ // Begin: New Expressions for MsgLang
  procexp returns [ProcExp ast] 
         locals [ArrayList<String> formals = new ArrayList<String>(); ] : 
  		'(' Process  
@@ -61,3 +77,4 @@ exp returns [Exp ast]:
  		'(' Self 
  		')' { $ast = new SelfExp(); }
  		;
+// End: New Expressions for ForkLang
