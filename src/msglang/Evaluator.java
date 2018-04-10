@@ -203,21 +203,21 @@ public class Evaluator implements Visitor<Value> {
     }
 
     @Override
-    public Value visit(LessExp e, Env env, Heap h) { // New for funclang.
+    public Value visit(LessExp e, Env env, Heap h) { 
 	Value.NumVal first = (Value.NumVal) e.first_exp().accept(this, env, h);
 	Value.NumVal second = (Value.NumVal) e.second_exp().accept(this, env, h);
 	return new Value.BoolVal(first.v() < second.v());
     }
 
     @Override
-    public Value visit(EqualExp e, Env env, Heap h) { // New for funclang.
-	Value.NumVal first = (Value.NumVal) e.first_exp().accept(this, env, h);
-	Value.NumVal second = (Value.NumVal) e.second_exp().accept(this, env, h);
-	return new Value.BoolVal(first.v() == second.v());
+    public Value visit(EqualExp e, Env env, Heap h) { 
+	Value first = (Value) e.first_exp().accept(this, env, h);
+	Value second = (Value) e.second_exp().accept(this, env, h);
+	return new Value.BoolVal(first.equals(second));
     }
 
     @Override
-    public Value visit(GreaterExp e, Env env, Heap h) { // New for funclang.
+    public Value visit(GreaterExp e, Env env, Heap h) {
 	Value.NumVal first = (Value.NumVal) e.first_exp().accept(this, env, h);
 	Value.NumVal second = (Value.NumVal) e.second_exp().accept(this, env, h);
 	return new Value.BoolVal(first.v() > second.v());
