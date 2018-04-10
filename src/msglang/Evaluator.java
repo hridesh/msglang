@@ -477,15 +477,15 @@ public class Evaluator implements Visitor<Value> {
 
     @Override
     public Value visit(ProcExp e, Env env, Heap h) {
-	return new Value.ActorVal(env, e.formals(), e.body(), this, h);
+	return new Value.ProcessVal(env, e.formals(), e.body(), this, h);
     }
 
     @Override
     public Value visit(SendExp e, Env env, Heap h) {
 	Object result = e.operator().accept(this, env, h);
-	if(!(result instanceof Value.ActorVal))
+	if(!(result instanceof Value.ProcessVal))
 	    return new Value.DynamicError("Operator not an actor in send " +  ts.visit(e, env, h));
-	Value.ActorVal actor =  (Value.ActorVal) result; //Dynamic checking
+	Value.ProcessVal actor =  (Value.ProcessVal) result; //Dynamic checking
 	List<Exp> operands = e.operands();
 
 	// Call-by-value semantics
@@ -510,7 +510,7 @@ public class Evaluator implements Visitor<Value> {
     @Override
     public Value visit(SelfExp e, Env env, Heap h) {
 	Value result = env.get("self");
-	if(!(result instanceof Value.ActorVal))
+	if(!(result instanceof Value.ProcessVal))
 	    return new Value.DynamicError("Self is not an actor in " +  ts.visit(e, env, h));
 	return result;
     }
@@ -518,9 +518,9 @@ public class Evaluator implements Visitor<Value> {
     @Override
     public Value visit(StopExp e, Env env, Heap h) {
 	Value result = env.get("self");
-	if(!(result instanceof Value.ActorVal))
+	if(!(result instanceof Value.ProcessVal))
 	    return new Value.DynamicError("Self is not an actor in " +  ts.visit(e, env, h));
-	Value.ActorVal actor =  (Value.ActorVal) result; //Dynamic checking
+	Value.ProcessVal actor =  (Value.ProcessVal) result; //Dynamic checking
 	actor.exit();
 	return new Value.UnitVal();
     }

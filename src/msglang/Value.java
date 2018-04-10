@@ -11,14 +11,14 @@ public interface Value {
     public String tostring();
     public boolean equals(Value v);
 
-    static class ActorVal extends Thread implements Value { //New in the Actorlang
+    static class ProcessVal extends Thread implements Value { //New in Msglang
 	private Env _env;
 	private List<String> _formals;
 	private Exp _body;
 	private Evaluator _evaluator;
 	private Heap _h;
 	private java.util.concurrent.LinkedBlockingDeque<List<Value>> _queue;
-	public ActorVal(Env env, List<String> formals, Exp body, Evaluator evaluator, Heap h) {
+	public ProcessVal(Env env, List<String> formals, Exp body, Evaluator evaluator, Heap h) {
 	    _env = env;
 	    _formals = formals;
 	    _body = body;
@@ -56,7 +56,7 @@ public interface Value {
 	    return "actor: " + this;
 	}
 	public boolean equals(Value v) { 
-	    if(v instanceof ActorVal)
+	    if(v instanceof ProcessVal)
 		return super.equals(v);
 	    return false;
 	}
