@@ -961,17 +961,38 @@ public interface AST {
      */
     public static class SelfExp extends Exp {
 
-	public SelfExp() {}
+    	public SelfExp() {}
 
-	public Object accept(Visitor visitor, Env env, Heap h) {
-	    return visitor.visit(this, env, h);
-	}
+    	public Object accept(Visitor visitor, Env env, Heap h) {
+    		return visitor.visit(this, env, h);
+    	}
     }
 
-    public static class ErrorExp extends Exp {
+    /**
+     * A print expression has the syntax 
+     * 
+     *  (print expression)
+     *  
+     */
+    public static class PrintExp extends Exp {
+	private Exp _value_exp;
+
+	public PrintExp(Exp value_exp) {
+	    _value_exp = value_exp;
+	}
+
 	public Object accept(Visitor visitor, Env env, Heap h) {
 	    return visitor.visit(this, env, h);
 	}
+
+	public Exp value_exp() { return _value_exp; }
+
+    }
+    
+    public static class ErrorExp extends Exp {
+    	public Object accept(Visitor visitor, Env env, Heap h) {
+    		return visitor.visit(this, env, h);
+    	}
     }
 
     public interface Visitor <T> {
@@ -1022,5 +1043,6 @@ public interface AST {
 	public T visit(AST.SendExp e, Env env, Heap h); // New for the Msglang
 	public T visit(AST.SelfExp e, Env env, Heap h); // New for the Msglang
 	public T visit(AST.StopExp e, Env env, Heap h); // New for the Msglang
+	public T visit(AST.PrintExp e, Env env, Heap h); // New for the Msglang
     }	
 }

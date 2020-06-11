@@ -48,6 +48,7 @@ exp returns [Exp ast]:
         | send=sendexp { $ast = $send.ast; }
         | stp=stopexp { $ast = $stp.ast; }
         | self=selfexp { $ast = $self.ast; }
+        | print=printexp { $ast = $print.ast; }
 // End: New Expressions for Msglang        
         ;
  
@@ -77,6 +78,13 @@ exp returns [Exp ast]:
  		'(' Self 
  		')' { $ast = new SelfExp(); }
  		;
+
+ printexp returns [PrintExp ast] :
+        '(' Print
+            e1=exp
+        ')' { $ast = new PrintExp($e1.ast); }
+         ;
+
 // End: New Expressions for ForkLang
 
  // Begin: New Expressions for ForkLang
@@ -362,6 +370,7 @@ exp returns [Exp ast]:
  Send : 'send' ;
  Stop : 'stop' ;
  Self : 'self' ;
+ Print : 'print' ;
  
  Number : DIGIT+ ;
 

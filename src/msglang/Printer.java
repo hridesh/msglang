@@ -327,5 +327,12 @@ public class Printer {
 			return "(stop)";
 		}
 
+		@Override
+		public String visit(PrintExp e, Env env, Heap h) {
+            String result = "(print ";
+            result += e.value_exp().accept(this, env, h);
+            return result + ")";
+		}
+
 	}
 }

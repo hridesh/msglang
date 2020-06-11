@@ -1,6 +1,7 @@
 package msglang;
 import java.util.List;
 
+import msglang.AST.PrintExp;
 import msglang.AST.ProcExp;
 import msglang.AST.SelfExp;
 import msglang.AST.SendExp;
@@ -524,5 +525,13 @@ public class Evaluator implements Visitor<Value> {
 	actor.exit();
 	return new Value.UnitVal();
     }
+
+	@Override
+	public Value visit(PrintExp e, Env env, Heap h) {
+		Exp value_exp = e.value_exp();
+		Object result = value_exp.accept(this, env, h);
+		new Printer().print((Value)result);
+		return new Value.UnitVal();
+	}
 
 }

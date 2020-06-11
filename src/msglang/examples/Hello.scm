@@ -1,7 +1,7 @@
 (define hello 
-	(process (sender message)
-		"Hello"
+	(process (message)
+		(print "Hello")
 	)
 )
 
-(send hello (self) "hi")
+(send hello "hi")
