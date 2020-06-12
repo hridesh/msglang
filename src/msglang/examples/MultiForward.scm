@@ -1,11 +1,18 @@
+(define seq 
+	(lambda (cmd1 cmd2) cmd1)
+)
+
 (define sum 
 	(process (num1 num2)
 		(print (+ num1 num2))
 	)
 )
-(define forward
+(define multforward
 	(process (num1 num2)
-		(send sum num1 num2)
+		(seq 
+			(send sum num1 num2)
+			(send sum (+1 num1) (+ 1 num2))
+		)
 	)
 )
-(send forward 300 42)
+(send multforward 300 42)
