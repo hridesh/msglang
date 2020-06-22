@@ -1,6 +1,4 @@
-(define seq 
-	(lambda (cmd1 cmd2) cmd1)
-)
+(define seq (lambda (cmd1 cmd2) cmd1))
 
 (define ping 
 	(process (sender num)
