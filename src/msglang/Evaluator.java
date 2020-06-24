@@ -485,8 +485,8 @@ public class Evaluator implements Visitor<Value> {
 	public Value visit(SendExp e, Env env, Heap h) {
 		Object result = e.operator().accept(this, env, h);
 		if(!(result instanceof Value.ProcessVal))
-			return new Value.DynamicError("Operator not an actor in send " +  ts.visit(e, env, h));
-		Value.ProcessVal actor =  (Value.ProcessVal) result; //Dynamic checking
+			return new Value.DynamicError("Operator not a process in send " +  ts.visit(e, env, h));
+		Value.ProcessVal process =  (Value.ProcessVal) result;
 		List<Exp> operands = e.operands();
 
 		// Call-by-value semantics
@@ -494,18 +494,18 @@ public class Evaluator implements Visitor<Value> {
 		for(Exp exp : operands) 
 			actuals.add((Value)exp.accept(this, env, h));
 
-		List<String> formals = actor.formals();
+		List<String> formals = process.formals();
 		if (formals.size()!=actuals.size())
 			return new Value.DynamicError("Argument mismatch in send " + ts.visit(e, env, h));
 
 		try {
-			if(actor.receive(actuals)) {
+			if(process.receive(actuals)) {
 				return new Value.UnitVal();
 			}
 		} catch (InterruptedException e1) {
 			e1.printStackTrace();
 		}
-		return new Value.DynamicError("Message send to dead actor in " + ts.visit(e, env, h));
+		return new Value.DynamicError("Message send to finished process in " + ts.visit(e, env, h));
 	}
 
 	@Override
