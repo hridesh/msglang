@@ -512,7 +512,7 @@ public class Evaluator implements Visitor<Value> {
 	public Value visit(SelfExp e, Env env, Heap h) {
 		Value result = env.get("self");
 		if(!(result instanceof Value.ProcessVal))
-			return new Value.DynamicError("Self is not an actor in " +  ts.visit(e, env, h));
+			return new Value.DynamicError("Self is not a process in " +  ts.visit(e, env, h));
 		return result;
 	}
 
@@ -520,9 +520,9 @@ public class Evaluator implements Visitor<Value> {
 	public Value visit(StopExp e, Env env, Heap h) {
 		Value result = env.get("self");
 		if(!(result instanceof Value.ProcessVal))
-			return new Value.DynamicError("Self is not an actor in " +  ts.visit(e, env, h));
-		Value.ProcessVal actor =  (Value.ProcessVal) result; //Dynamic checking
-		actor.exit();
+			return new Value.DynamicError("Self is not a process in " +  ts.visit(e, env, h));
+		Value.ProcessVal process =  (Value.ProcessVal) result; //Dynamic checking
+		process.exit();
 		return new Value.UnitVal();
 	}
 
