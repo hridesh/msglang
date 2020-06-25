@@ -1,6 +1,8 @@
 (define sum 
-	(process (num1 num2)
-		(print (+ num1 num2))
+	(process 
+		(receive (num1 num2)
+			(print (+ num1 num2))
+		)
 	)
 )
 
