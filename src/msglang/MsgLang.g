@@ -54,12 +54,10 @@ exp returns [Exp ast]:
         ;
  
  // Begin: New Expressions for MsgLang
- procexp returns [ProcExp ast] 
-        locals [ArrayList<String> formals = new ArrayList<String>(); ] : 
+ procexp returns [ProcExp ast] :
  		'(' Process  
- 			'(' ( id=Identifier { $formals.add($id.text); } )* ')' 
  			body=exp  
- 		')'  { $ast = new ProcExp($formals, $body.ast); }
+ 		')'  { $ast = new ProcExp($body.ast); }
  		;
 
  sendexp returns [SendExp ast] 

@@ -884,21 +884,17 @@ public interface AST {
 	/**
 	 * An anonymous process declaration has the syntax
 	 * 
-	 * procexp : '(' Process  '(' Identifier* ')' exp  ')'  ;
+	 * procexp : '(' Process exp  ')'  ;
 	 * 
 	 * @author hridesh
 	 *
 	 */
 	public static class ProcExp extends Exp {		
-		List<String> _formals;
 		Exp _body;
 
-		public ProcExp(List<String> formals, Exp body) {
-			_formals = formals;
+		public ProcExp(Exp body) {
 			_body = body;
 		}
-
-		public List<String> formals() { return _formals; }
 
 		public Exp body() { return _body; }
 

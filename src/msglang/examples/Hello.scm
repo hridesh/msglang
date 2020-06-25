@@ -1,5 +1,5 @@
 (define hello 
-	(process (message)
+	(process
 		(receive (message)
 			(print "Hello")
 		)

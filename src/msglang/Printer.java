@@ -300,10 +300,7 @@ public class Printer {
 
 		@Override
 		public String visit(ProcExp e, Env env, Heap h) {
-			String result = "(process ( ";
-			for(String formal : e.formals()) 
-				result += formal + " ";
-			result += ") ";
+			String result = "(process ";
 			result += e.body().accept(this, env, h);
 			return result + ")";
 		}

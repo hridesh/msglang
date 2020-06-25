@@ -478,7 +478,7 @@ public class Evaluator implements Visitor<Value> {
 
 	@Override
 	public Value visit(ProcExp e, Env env, Heap h) {
-		return new Value.ProcessVal(env, e.formals(), e.body(), this, h);
+		return new Value.ProcessVal(env, e.body(), this, h);
 	}
 
 	@Override
@@ -493,10 +493,6 @@ public class Evaluator implements Visitor<Value> {
 		List<Value> actuals = new ArrayList<Value>(operands.size());
 		for(Exp exp : operands) 
 			actuals.add((Value)exp.accept(this, env, h));
-
-		List<String> formals = process.formals();
-		if (formals.size()!=actuals.size())
-			return new Value.DynamicError("Argument mismatch in send " + ts.visit(e, env, h));
 
 		try {
 			if(process.receive(actuals)) {
@@ -515,8 +511,13 @@ public class Evaluator implements Visitor<Value> {
 			return new Value.DynamicError("Current computation not within a process in " +  ts.visit(e, env, h));
 		Value.ProcessVal process =  (Value.ProcessVal) result; //Dynamic checking
 		List<Value> actuals = process.receivehelper();
+
+		List<String> formals = e.formals();
+		if (formals.size()!=actuals.size())
+			return new Value.DynamicError("Argument mismatch in receive " + ts.visit(e, env, h));
+		
 		Env receive_env = env;
-		for (int index = 0; index < e._formals.size(); index++)
+		for (int index = 0; index < formals.size(); index++)
 			receive_env = new ExtendEnv(receive_env, e._formals.get(index), actuals.get(index));
 		return e._body.accept(this, receive_env, h);
 	}

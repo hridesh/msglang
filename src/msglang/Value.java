@@ -13,14 +13,12 @@ public interface Value {
 
 	static class ProcessVal extends Thread implements Value { //New in Msglang
 		private Env _env;
-		private List<String> _formals;
 		private Exp _body;
 		private Evaluator _evaluator;
 		private Heap _h;
 		private java.util.concurrent.LinkedBlockingDeque<List<Value>> _queue;
-		public ProcessVal(Env env, List<String> formals, Exp body, Evaluator evaluator, Heap h) {
+		public ProcessVal(Env env, Exp body, Evaluator evaluator, Heap h) {
 			_env = env;
-			_formals = formals;
 			_body = body;
 			_evaluator = evaluator;
 			_h = h;
@@ -59,7 +57,6 @@ public interface Value {
 			}
 			return actuals;
 		}
-		public List<String> formals() { return _formals; }
 		volatile boolean _exit = false;
 		private synchronized boolean _exit() { return _exit; } 
 		public synchronized void exit() { _exit = true; }
