@@ -934,6 +934,32 @@ public interface AST {
 	}
 
 	/**
+	 * A receive declaration has the syntax
+	 * 
+	 * receiveexp : '(' Receive  '(' Identifier* ')' exp  ')'  ;
+	 * 
+	 * @author hridesh
+	 *
+	 */
+	public static class ReceiveExp extends Exp {		
+		List<String> _formals;
+		Exp _body;
+
+		public ReceiveExp(List<String> formals, Exp body) {
+			_formals = formals;
+			_body = body;
+		}
+
+		public List<String> formals() { return _formals; }
+
+		public Exp body() { return _body; }
+
+		public <T> T accept(Visitor<T> visitor, Env env, Heap h) {
+			return visitor.visit(this, env, h);
+		}
+	}
+
+	/**
 	 * A stop expression has the syntax
 	 * 
 	 *  stopexp : '(' Stop ')' ;
@@ -1041,6 +1067,7 @@ public interface AST {
 		public T visit(AST.UnlockExp e, Env env, Heap h); 
 		public T visit(AST.ProcExp e, Env env, Heap h); // New for the Msglang
 		public T visit(AST.SendExp e, Env env, Heap h); // New for the Msglang
+		public T visit(AST.ReceiveExp e, Env env, Heap h); // New for the Msglang
 		public T visit(AST.SelfExp e, Env env, Heap h); // New for the Msglang
 		public T visit(AST.StopExp e, Env env, Heap h); // New for the Msglang
 		public T visit(AST.PrintExp e, Env env, Heap h); // New for the Msglang

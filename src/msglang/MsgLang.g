@@ -46,6 +46,7 @@ exp returns [Exp ast]:
 // Begin: New Expressions for Msglang        
         | proc=procexp { $ast = $proc.ast; }
         | send=sendexp { $ast = $send.ast; }
+        | receive=receiveexp { $ast = $receive.ast; }
         | stp=stopexp { $ast = $stp.ast; }
         | self=selfexp { $ast = $self.ast; }
         | print=printexp { $ast = $print.ast; }
@@ -67,6 +68,14 @@ exp returns [Exp ast]:
  			receiver=exp 
  			( argument=exp { $actuals.add($argument.ast); } )*  
  		')' { $ast = new SendExp($receiver.ast, $actuals); }
+ 		;
+
+ receiveexp returns [ReceiveExp ast] 
+        locals [ArrayList<String> formals = new ArrayList<String>(); ] : 
+ 		'(' Receive  
+ 			'(' ( id=Identifier { $formals.add($id.text); } )* ')' 
+ 			body=exp  
+ 		')'  { $ast = new ReceiveExp($formals, $body.ast); }
  		;
 
  stopexp returns [StopExp ast] : 
@@ -368,6 +377,7 @@ exp returns [Exp ast]:
  UnLock : 'unlock' ;
  Process : 'process' ;
  Send : 'send' ;
+ Receive : 'receive' ;
  Stop : 'stop' ;
  Self : 'self' ;
  Print : 'print' ;

@@ -300,7 +300,7 @@ public class Printer {
 
 		@Override
 		public String visit(ProcExp e, Env env, Heap h) {
-			String result = "(actor ( ";
+			String result = "(process ( ";
 			for(String formal : e.formals()) 
 				result += formal + " ";
 			result += ") ";
@@ -314,6 +314,16 @@ public class Printer {
 			result += e.operator().accept(this, env, h) + " ";
 			for(AST.Exp exp : e.operands())
 				result += exp.accept(this, env, h) + " ";
+			return result + ")";
+		}
+
+		@Override
+		public String visit(ReceiveExp e, Env env, Heap h) {
+			String result = "(receive ( ";
+			for(String formal : e.formals()) 
+				result += formal + " ";
+			result += ") ";
+			result += e.body().accept(this, env, h);
 			return result + ")";
 		}
 

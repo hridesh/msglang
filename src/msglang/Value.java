@@ -29,16 +29,18 @@ public interface Value {
 		}
 		public void run(){
 			while(!_exit()) {
-				try {
-					List<Value> actuals = _queue.take();
-					Env receive_env = _env;
-					for (int index = 0; index < _formals.size(); index++)
-						receive_env = new ExtendEnv(receive_env, _formals.get(index), actuals.get(index));
-					receive_env = new ExtendEnv(receive_env, "self", this);
-					_body.accept(_evaluator, receive_env, _h);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
+//				try {
+//					List<Value> actuals = _queue.take();
+//					Env receive_env = _env;
+//					for (int index = 0; index < _formals.size(); index++)
+//						receive_env = new ExtendEnv(receive_env, _formals.get(index), actuals.get(index));
+//					receive_env = new ExtendEnv(receive_env, "self", this);
+//					_body.accept(_evaluator, receive_env, _h);
+//				} catch (InterruptedException e) {
+//					e.printStackTrace();
+//				}
+				Env body_env = new ExtendEnv(_env, "self", this);
+				_body.accept(_evaluator, body_env, _h);
 			}
 		}
 		public boolean receive (List<Value> request) throws InterruptedException {
@@ -47,6 +49,15 @@ public interface Value {
 				return true;
 			}
 			return false;
+		}
+		public List<Value> receivehelper() {
+			List<Value> actuals = null;
+			try {
+				actuals = _queue.take();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			return actuals;
 		}
 		public List<String> formals() { return _formals; }
 		volatile boolean _exit = false;

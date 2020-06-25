@@ -509,6 +509,19 @@ public class Evaluator implements Visitor<Value> {
 	}
 
 	@Override
+	public Value visit(ReceiveExp e, Env env, Heap h) {
+		Value result = env.get("self");
+		if(!(result instanceof Value.ProcessVal))
+			return new Value.DynamicError("Current computation not within a process in " +  ts.visit(e, env, h));
+		Value.ProcessVal process =  (Value.ProcessVal) result; //Dynamic checking
+		List<Value> actuals = process.receivehelper();
+		Env receive_env = env;
+		for (int index = 0; index < e._formals.size(); index++)
+			receive_env = new ExtendEnv(receive_env, e._formals.get(index), actuals.get(index));
+		return e._body.accept(this, receive_env, h);
+	}
+
+	@Override
 	public Value visit(SelfExp e, Env env, Heap h) {
 		Value result = env.get("self");
 		if(!(result instanceof Value.ProcessVal))
