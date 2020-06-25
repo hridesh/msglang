@@ -27,16 +27,6 @@ public interface Value {
 		}
 		public void run(){
 			while(!_exit()) {
-//				try {
-//					List<Value> actuals = _queue.take();
-//					Env receive_env = _env;
-//					for (int index = 0; index < _formals.size(); index++)
-//						receive_env = new ExtendEnv(receive_env, _formals.get(index), actuals.get(index));
-//					receive_env = new ExtendEnv(receive_env, "self", this);
-//					_body.accept(_evaluator, receive_env, _h);
-//				} catch (InterruptedException e) {
-//					e.printStackTrace();
-//				}
 				Env body_env = new ExtendEnv(_env, "self", this);
 				_body.accept(_evaluator, body_env, _h);
 			}

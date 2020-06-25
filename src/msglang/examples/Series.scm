@@ -1,15 +1,19 @@
 (define serieshelper
-	(process (num accumulator)
-		(if (> num 0)
-			(send (self) (- num 1) (+ num accumulator))
-			(print accumulator)
+	(process 
+		(receive (num accumulator)
+			(if (> num 0)
+				(send (self) (- num 1) (+ num accumulator))
+				(print accumulator)
+			)
 		)
 	)
 )
 
 (define series
-	(process (num)
-		(send serieshelper num 0)
+	(process 
+		(receive (num)
+			(send serieshelper num 0)
+		)
 	)
 )
 
