@@ -3,7 +3,7 @@
 (define ticktock 
 	(process
 		(receive (tick)
-			(receive (tock) 
+			(receive (tock num) 
 				(seq 
 					(print tick) 
 					(print tock) 
@@ -13,4 +13,4 @@
 	)
 )
 
-(seq (send ticktock "tick") (send ticktock "tock"))
+(seq (send ticktock "tick") (send ticktock "tock" 342))
