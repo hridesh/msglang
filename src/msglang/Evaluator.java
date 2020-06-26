@@ -21,7 +21,7 @@ public class Evaluator implements Visitor<Value> {
 
 	private final Printer.Formatter ts = new Printer.Formatter();
 
-	private volatile Env initEnv = initialEnv(); //New for definelang    
+	private volatile Env initEnv = initialEnv();
 
 	Value valueOf(Program p) {
 		Heap heap = new Heap16Bit();
@@ -33,8 +33,8 @@ public class Evaluator implements Visitor<Value> {
 		List<Exp> operands = e.all();
 		double result = 0;
 		for(Exp exp: operands) {
-			NumVal intermediate = (NumVal) exp.accept(this, env, h); // Dynamic type-checking
-			result += intermediate.v(); //Semantics of AddExp in terms of the target language.
+			NumVal intermediate = (NumVal) exp.accept(this, env, h);
+			result += intermediate.v(); 
 		}
 		return new NumVal(result);
 	}
