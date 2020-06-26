@@ -425,7 +425,7 @@ public class Evaluator implements Visitor<Value> {
 			actuals.add((Value)exp.accept(this, env, h));
 
 		try {
-			if(process.receive(actuals)) {
+			if(process.sendhelper(actuals)) {
 				return new Value.UnitVal();
 			}
 		} catch (InterruptedException e1) {

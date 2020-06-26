@@ -26,12 +26,12 @@ public interface Value {
 			this.start();
 		}
 		public void run(){
+			Env body_env = new ExtendEnv(_env, "self", this);
 			while(!_exit()) {
-				Env body_env = new ExtendEnv(_env, "self", this);
 				_body.accept(_evaluator, body_env, _h);
 			}
 		}
-		public boolean receive (List<Value> request) throws InterruptedException {
+		public boolean sendhelper (List<Value> request) throws InterruptedException {
 			if(!_exit()) {
 				_queue.put(request);
 				return true;
