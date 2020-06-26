@@ -277,28 +277,6 @@ public class Printer {
         }
 
 		@Override
-		public String visit(ForkExp e, Env env, Heap h) {
-            String result = "(fork ";
-            result += e.fst_exp().accept(this, env, h) + " ";
-            result += e.snd_exp().accept(this, env, h);
-            return result + ")";
-		}
-
-		@Override
-		public String visit(LockExp e, Env env, Heap h) {
-            String result = "(lock ";
-            result += e.value_exp().accept(this, env, h);
-            return result + ")";
-		}
-
-		@Override
-		public String visit(UnlockExp e, Env env, Heap h) {
-            String result = "(unlock ";
-            result += e.value_exp().accept(this, env, h);
-            return result + ")";
-		}
-
-		@Override
 		public String visit(ProcExp e, Env env, Heap h) {
 			String result = "(process ";
 			result += e.body().accept(this, env, h);
