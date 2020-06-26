@@ -19,9 +19,9 @@ import java.io.IOException;
 
 public class Evaluator implements Visitor<Value> {
 
-	Printer.Formatter ts = new Printer.Formatter();
+	private final Printer.Formatter ts = new Printer.Formatter();
 
-	Env initEnv = initialEnv(); //New for definelang    
+	private volatile Env initEnv = initialEnv(); //New for definelang    
 
 	Value valueOf(Program p) {
 		Heap heap = new Heap16Bit();
