@@ -10,6 +10,7 @@ import org.antlr.v4.runtime.Lexer;
 import msglang.parser.*;
 import msglang.AST.*;
 
+@SuppressWarnings("deprecation")
 public class Reader {
 	
 	public Program read() throws IOException {
